@@ -68,7 +68,7 @@ class _MyApp extends State<MyApp> {
               },
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -77,24 +77,24 @@ class _MyApp extends State<MyApp> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          print("save");
                           setState(() {
                             _insetTransaction();
                           });
+                          Navigator.of(context).pop();
                         },
-                        child: Text("Save"),
+                        child: const Text("Save"),
                       ),
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(left: 10)),
+                  const Padding(padding: EdgeInsets.only(left: 10)),
                   Expanded(
                     child: SizedBox(
                       height: 50,
                       child: ElevatedButton(
                           onPressed: () {
-                            print("cancel");
+                            Navigator.of(context).pop();
                           },
-                          child: Text("Cancel")),
+                          child: const Text("Cancel")),
                     ),
                   ),
                 ],
@@ -114,17 +114,15 @@ class _MyApp extends State<MyApp> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                _insetTransaction();
-              });
+              _onButtonShowModalSheet();
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
           tooltip: "Add transaction",
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () {
             _onButtonShowModalSheet();
           }),
@@ -138,22 +136,12 @@ class _MyApp extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              Builder(
-                builder: (context) => ElevatedButton(
-                  onPressed: () {
-                    _onButtonShowModalSheet();
-                    //display the list below
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Transaction list: $_transactions',
-                        ),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  },
-                  child: const Text('Insert!'),
-                ),
+              ElevatedButton(
+                onPressed: () {
+                  _onButtonShowModalSheet();
+                  //display the list below
+                },
+                child: const Text('Insert!'),
               ),
               Transactionlist(transactions: _transactions),
             ],

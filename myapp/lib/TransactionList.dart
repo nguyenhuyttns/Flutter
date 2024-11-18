@@ -18,12 +18,12 @@ class Transactionlist extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Padding(padding: const EdgeInsets.all(10)),
+              const Padding(padding: EdgeInsets.all(10)),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(padding: const EdgeInsets.all(10)),
+                  const Padding(padding: EdgeInsets.all(10)),
                   Text(
                     transactions[index].content,
                     style: const TextStyle(
@@ -39,8 +39,8 @@ class Transactionlist extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
+                  const Padding(
+                    padding: EdgeInsets.all(10),
                   ),
                 ],
               ),
@@ -49,7 +49,12 @@ class Transactionlist extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 2),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                      ),
                       child: Text(
                         'Price: ${transactions[index].amount}\$',
                         style: const TextStyle(
@@ -58,12 +63,8 @@ class Transactionlist extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 2),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
                     ),
-                    Padding(padding: EdgeInsets.only(right: 10)),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
                   ],
                 ),
               )
@@ -76,7 +77,7 @@ class Transactionlist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 500,
       child: _buildListView(),
     );

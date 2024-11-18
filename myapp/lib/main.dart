@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:myapp/MyApp.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
     title: "Transaction app",
     home: MyApp(),
   ));
