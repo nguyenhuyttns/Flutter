@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/TransactionList.dart';
 import 'package:myapp/transaction.dart';
 
 class MyApp extends StatefulWidget {
@@ -20,42 +21,6 @@ class _MyApp extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _buildWidgetList() {
-      int index = 0;
-      return _transactions.map(
-        (eachTransaction) {
-          index++;
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            color: (index - 1) % 2 == 0 ? Colors.green : Colors.teal,
-            child: ListTile(
-              leading: const Icon(Icons.alarm),
-              title: Text(
-                eachTransaction.content,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
-              subtitle: Text(
-                "Price: ${eachTransaction.amount}",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                print('Tap me');
-              },
-            ),
-          );
-        },
-      ).toList();
-    }
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -66,63 +31,63 @@ class _MyApp extends State<MyApp> {
           // Vùng an toàn để không đụng vào layout
           minimum: const EdgeInsets.only(
               left: 20, right: 20), // Khoảng cách an toàn tối thiểu
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Content',
-                ),
-                controller: _contentController,
-                onChanged: (text) {
-                  setState(() {
-                    _transaction.content = text;
-                  });
-                },
-              ),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Amount',
-                ),
-                controller: _amountController,
-                onChanged: (text) {
-                  _transaction.amount = int.tryParse(text) ?? 0;
-                },
-              ),
-              const SizedBox(height: 20),
-              Builder(
-                builder: (context) => ElevatedButton(
-                  onPressed: () {
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Content',
+                  ),
+                  controller: _contentController,
+                  onChanged: (text) {
                     setState(() {
-                      // Tạo một bản sao mới của _transaction và thêm vào danh sách
-                      _transactions.add(Transaction(
-                        content: _transaction.content,
-                        amount: _transaction.amount,
-                      ));
-
-                      // Đặt lại _transaction và các TextField
-                      _transaction = Transaction(content: "", amount: 0);
-                      _contentController.text = "";
-                      _amountController.text = "";
+                      _transaction.content = text;
                     });
-
-                    //display the list below
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Transaction list: $_transactions',
-                        ),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
                   },
-                  child: const Text('Insert!'),
                 ),
-              ),
-              Column(
-                children: _buildWidgetList(),
-              )
-            ],
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Amount',
+                  ),
+                  controller: _amountController,
+                  onChanged: (text) {
+                    _transaction.amount = int.tryParse(text) ?? 0;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Builder(
+                  builder: (context) => ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        // Tạo một bản sao mới của _transaction và thêm vào danh sách
+                        _transactions.add(Transaction(
+                          content: _transaction.content,
+                          amount: _transaction.amount,
+                        ));
+
+                        // Đặt lại _transaction và các TextField
+                        _transaction = Transaction(content: "", amount: 0);
+                        _contentController.text = "";
+                        _amountController.text = "";
+                      });
+
+                      //display the list below
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Transaction list: $_transactions',
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    child: const Text('Insert!'),
+                  ),
+                ),
+                Transactionlist(transactions: _transactions),
+              ],
+            ),
           ),
         ),
       ),
