@@ -20,6 +20,42 @@ class _MyApp extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _buildWidgetList() {
+      int index = 0;
+      return _transactions.map(
+        (eachTransaction) {
+          index++;
+          return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            color: (index - 1) % 2 == 0 ? Colors.green : Colors.teal,
+            child: ListTile(
+              leading: const Icon(Icons.alarm),
+              title: Text(
+                eachTransaction.content,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+              subtitle: Text(
+                "Price: ${eachTransaction.amount}",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+              onTap: () {
+                print('Tap me');
+              },
+            ),
+          );
+        },
+      ).toList();
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -84,16 +120,7 @@ class _MyApp extends State<MyApp> {
                 ),
               ),
               Column(
-                children: _transactions.map((eachTransaction) {
-                  return ListTile(
-                    leading: const Icon(Icons.alarm),
-                    title: Text(eachTransaction.content),
-                    subtitle: Text("Price: ${eachTransaction.amount}"),
-                    onTap: () {
-                      print('Tap me');
-                    },
-                  );
-                }).toList(),
+                children: _buildWidgetList(),
               )
             ],
           ),
