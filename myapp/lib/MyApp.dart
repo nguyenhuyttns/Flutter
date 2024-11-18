@@ -41,84 +41,122 @@ class _MyApp extends State<MyApp> {
     _amountController.text = "";
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Transaction manager"),
-          actions: [
-            IconButton(
-              onPressed: () {
+  void _onButtonShowModalSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Content',
+              ),
+              controller: _contentController,
+              onChanged: (text) {
                 setState(() {
-                  _insetTransaction();
+                  _transaction.content = text;
                 });
               },
-              icon: Icon(Icons.add),
             ),
+            TextField(
+              decoration: const InputDecoration(
+                labelText: 'Amount',
+              ),
+              controller: _amountController,
+              onChanged: (text) {
+                _transaction.amount = int.tryParse(text) ?? 0;
+              },
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          print("save");
+                          setState(() {
+                            _insetTransaction();
+                          });
+                        },
+                        child: Text("Save"),
+                      ),
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 10)),
+                  Expanded(
+                    child: SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            print("cancel");
+                          },
+                          child: Text("Cancel")),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-            tooltip: "Add transaction",
-            child: Icon(Icons.add),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Transaction manager"),
+        actions: [
+          IconButton(
             onPressed: () {
               setState(() {
                 _insetTransaction();
               });
-            }),
-        body: SafeArea(
-          // Vùng an toàn để không đụng vào layout
-          minimum: const EdgeInsets.only(
-              left: 20, right: 20), // Khoảng cách an toàn tối thiểu
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Content',
-                  ),
-                  controller: _contentController,
-                  onChanged: (text) {
-                    setState(() {
-                      _transaction.content = text;
-                    });
-                  },
-                ),
-                TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'Amount',
-                  ),
-                  controller: _amountController,
-                  onChanged: (text) {
-                    _transaction.amount = int.tryParse(text) ?? 0;
-                  },
-                ),
-                const SizedBox(height: 20),
-                Builder(
-                  builder: (context) => ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        this._insetTransaction();
-                      });
-
-                      //display the list below
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Transaction list: $_transactions',
-                          ),
-                          duration: const Duration(seconds: 2),
+            },
+            icon: Icon(Icons.add),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+          tooltip: "Add transaction",
+          child: Icon(Icons.add),
+          onPressed: () {
+            _onButtonShowModalSheet();
+          }),
+      body: SafeArea(
+        // Vùng an toàn để không đụng vào layout
+        minimum: const EdgeInsets.only(
+            left: 20, right: 20), // Khoảng cách an toàn tối thiểu
+        child: SingleChildScrollView(
+          child: Column(
+            //in this lesson we will replace the input with "Model Bottom Sheet"
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              Builder(
+                builder: (context) => ElevatedButton(
+                  onPressed: () {
+                    _onButtonShowModalSheet();
+                    //display the list below
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Transaction list: $_transactions',
                         ),
-                      );
-                    },
-                    child: const Text('Insert!'),
-                  ),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  child: const Text('Insert!'),
                 ),
-                Transactionlist(transactions: _transactions),
-              ],
-            ),
+              ),
+              Transactionlist(transactions: _transactions),
+            ],
           ),
         ),
       ),
