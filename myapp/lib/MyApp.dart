@@ -16,7 +16,8 @@ class _MyApp extends State<MyApp> {
       TextEditingController(); // Lấy dữ liệu từ TextField
   final _amountController = TextEditingController();
 
-  Transaction _transaction = Transaction(content: "", amount: 0);
+  Transaction _transaction =
+      Transaction(content: "", amount: 0, createdDate: DateTime.now());
   final List<Transaction> _transactions = List.empty(growable: true);
 
   void _insetTransaction() {
@@ -26,13 +27,16 @@ class _MyApp extends State<MyApp> {
       return;
     }
 
+    _transaction.createdDate = DateTime.now();
     _transactions.add(Transaction(
       content: _transaction.content,
       amount: _transaction.amount,
+      createdDate: _transaction.createdDate,
     ));
 
     // Đặt lại _transaction và các TextField
-    _transaction = Transaction(content: "", amount: 0);
+    _transaction =
+        Transaction(content: "", amount: 0, createdDate: DateTime.now());
     _contentController.text = "";
     _amountController.text = "";
   }

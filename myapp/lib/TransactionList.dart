@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'transaction.dart';
 
 class Transactionlist extends StatelessWidget {
@@ -14,24 +15,59 @@ class Transactionlist extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           color: (index - 1) % 2 == 0 ? Colors.green : Colors.teal,
-          child: ListTile(
-            leading: const Icon(Icons.alarm),
-            title: Text(
-              transactions[index].content,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(padding: const EdgeInsets.all(10)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(padding: const EdgeInsets.all(10)),
+                  Text(
+                    transactions[index].content,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    "Date: ${DateFormat.yMd().format(transactions[index].createdDate)}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                  ),
+                ],
               ),
-            ),
-            subtitle: Text(
-              "Price: ${transactions[index].amount}",
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-            onTap: () {},
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        'Price: ${transactions[index].amount}\$',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(right: 10)),
+                  ],
+                ),
+              )
+            ],
           ),
         );
       },
@@ -40,10 +76,6 @@ class Transactionlist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //"Dung scroolable"
-    //1.Listview(children: <widget>[]) => load all children
-    //2.ListView(itemBuilder:....) ->load only visible items
-
     return Container(
       height: 500,
       child: _buildListView(),
