@@ -19,14 +19,50 @@ class _MyApp extends State<MyApp> {
   Transaction _transaction = Transaction(content: "", amount: 0);
   final List<Transaction> _transactions = List.empty(growable: true);
 
+  void _insetTransaction() {
+    if (_transaction.content.isEmpty ||
+        _transaction.amount == 0 ||
+        _transaction.amount.isNaN) {
+      return;
+    }
+
+    _transactions.add(Transaction(
+      content: _transaction.content,
+      amount: _transaction.amount,
+    ));
+
+    // Đặt lại _transaction và các TextField
+    _transaction = Transaction(content: "", amount: 0);
+    _contentController.text = "";
+    _amountController.text = "";
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("SnackBar Demo"),
+          title: const Text("Transaction manager"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _insetTransaction();
+                });
+              },
+              icon: Icon(Icons.add),
+            ),
+          ],
         ),
+        floatingActionButton: FloatingActionButton(
+            tooltip: "Add transaction",
+            child: Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                _insetTransaction();
+              });
+            }),
         body: SafeArea(
           // Vùng an toàn để không đụng vào layout
           minimum: const EdgeInsets.only(
@@ -60,16 +96,7 @@ class _MyApp extends State<MyApp> {
                   builder: (context) => ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        // Tạo một bản sao mới của _transaction và thêm vào danh sách
-                        _transactions.add(Transaction(
-                          content: _transaction.content,
-                          amount: _transaction.amount,
-                        ));
-
-                        // Đặt lại _transaction và các TextField
-                        _transaction = Transaction(content: "", amount: 0);
-                        _contentController.text = "";
-                        _amountController.text = "";
+                        this._insetTransaction();
                       });
 
                       //display the list below
