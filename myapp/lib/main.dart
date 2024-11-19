@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:myapp/MyApp.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     title: "Transaction app",
-    home: MyApp(),
+    theme: ThemeData(
+      primaryColor: Colors.pink[200],
+    ),
+    home: const MyApp(),
   ));
 }

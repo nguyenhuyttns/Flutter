@@ -110,7 +110,14 @@ class _MyApp extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Transaction manager"),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: const Text(
+          "Transaction manager",
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: 'Doto',
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -121,11 +128,13 @@ class _MyApp extends State<MyApp> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          tooltip: "Add transaction",
-          child: const Icon(Icons.add),
-          onPressed: () {
-            _onButtonShowModalSheet();
-          }),
+        tooltip: "Add transaction",
+        child: const Icon(Icons.add),
+        onPressed: () {
+          _onButtonShowModalSheet();
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
       body: SafeArea(
         // Vùng an toàn để không đụng vào layout
         minimum: const EdgeInsets.only(
